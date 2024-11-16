@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Confirmation</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #000000, #8FD9D1);
+            background-size: 200% 200%;
+            font-family: 'Roboto', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            color: white;
+            font-size: 3em;
+        }
+
+        p {
+            color: white;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 id="message">Preparing your download...</h1>
+        <p id="subMessage">If the download doesn't start automatically, please check the file link.</p>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const fileName = urlParams.get('file');
+
+        // Elementos del DOM
+        const message = document.getElementById('message');
+        const subMessage = document.getElementById('subMessage');
+
+        if (fileName) {
+            const filePath = `https://.github.io/files/${fileName}`;
+
+            const tempLink = document.createElement('a');
+            tempLink.href = filePath;
+            tempLink.download = fileName;
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+
+            // Actualizar mensaje
+            message.textContent = "Your download is starting...";
+        } else {
+            // Manejar el caso de error
+            message.textContent = "Error: No file specified!";
+            subMessage.textContent = "Please check the URL for the correct file parameter.";
+        }
+    </script>
+</body>
+</html>
